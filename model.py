@@ -25,3 +25,23 @@ model.fit(X_train, y_train)
 # Save model and scaler
 joblib.dump(model, 'model.pkl')
 joblib.dump(scaler, 'scaler.pkl')
+
+def predict_cholesterol(age, bmi, blood_pressure, activity_level):
+    # Load model and scaler
+    model = joblib.load('model.pkl')
+    scaler = joblib.load('scaler.pkl')
+
+    # Prepare input
+    input_data = pd.DataFrame([{
+        'age': age,
+        'bmi': bmi,
+        'blood_pressure': blood_pressure,
+        'activity_level': activity_level
+    }])
+
+    # Scale input
+    input_scaled = scaler.transform(input_data)
+
+    # Predict
+    prediction = model.predict(input_scaled)
+    return round(prediction[0], 2)
